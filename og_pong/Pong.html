@@ -1,0 +1,125 @@
+<html>
+<head>
+<title> OG Pong </title>
+<script src="https://simplycodingcourses.com/files/simply.js"></script>
+<script>
+function start(){
+sjs.open("target",800,540);
+
+var song2 = new Audio("audio/song2.wav");
+
+
+var back = new sjs.Image("pics/2.jpg");
+back.setSize(800,540);
+
+var paddle = new sjs.Image("pics/player.png");
+paddle.type = "paddle";
+paddle.setSize(30,130);
+paddle.center().left();
+paddle.friction = .1;
+
+sjs.keyDown("R_KEY",function(){
+	player.moveTo(0,0);
+	player.pushUp(6);
+	player.pushLeft(6);
+});
+
+
+
+sjs.keyDown(W_KEY, function(){
+paddle.pushUp();
+});
+
+sjs.keyDown(S_KEY, function(){
+paddle.pushDown();
+});
+var paddle2 = new sjs.Image("pics/player.png");
+paddle2.type = "paddle2";
+paddle2.setSize(30,130);
+paddle2.center().right();
+paddle2.friction = 0;
+
+
+
+
+var player = new sjs.Image("pics/player.png");
+player.type = "player";
+player.setSize(25,25);
+player.center();
+player.friction = 0;
+player.bounce();
+player.up = true;
+
+player.pushLeft(6);
+player.pushUp(6);
+sjs.keyDown("Z_KEY",function(){
+	song2.play();
+});
+setInterval(function(){
+song2.play();
+},000); 
+
+sjs.onHit("player","paddle",function(player,paddle){
+	sjs.bounceOff(player,paddle);
+});
+
+sjs.onHit("player","paddle2",function(player,paddle2){
+	sjs.bounceOff(player,paddle2);
+});
+
+sjs.onHit("player","top_screen", function(player,top_screen){
+	player.up == false;
+	player.pushDown(6);
+	paddle2.pushDown(2.5);
+	
+});
+sjs.onHit("player","bottom_screen", function(player,bottom_screen){
+	player.up == true;
+	player.pushUp(6);
+	paddle2.pushUp(2.5);
+	
+});
+
+
+var score = 0;
+var score_txt = new sjs.Text("Score: 0", 21, "white"); 
+score_txt.top().right();
+
+sjs.onHit("player","left_screen", function(player,left_screen){
+score = score + 1;
+score_txt.setText("Score: "+score);
+sjs.bounceOff(player,left_screen);
+});
+
+
+var score2 = 0;
+var score2_txt = new sjs.Text("Score: 0", 21, "white"); 
+score2_txt.top().left();
+
+sjs.onHit("player","right_screen", function(player,right_screen){
+score2 = score2 + 1;
+score2_txt.setText("Score: "+score);
+sjs.bounceOff(player,right_screen);
+});
+
+
+//test
+
+//endtest
+
+
+
+
+
+
+
+
+} 
+</script>
+</head>
+<body onload="start()">
+<h1> OG Pong </h1>
+
+<div id="target" style="margin:auto;background:grey;"></div>
+</body>
+</html>
